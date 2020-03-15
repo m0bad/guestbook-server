@@ -1,23 +1,23 @@
 import {Request, Response} from "express";
 import jwt from 'jsonwebtoken';
-import {User} from '../models/user';
+import { User, IUser } from '../models/user';
 import {SECRET_KEY} from "../../local";
 
 export class AuthController {
     public registerUser = async (req: Request, res: Response) => {
         try {
-            const user = await User.create(req.body);
-            const {email, password, id} = user;
+            const user: any = new User(req.body);
+            const {email, password, _id} = user._doc;
             const token = jwt.sign({
-                    id,
+                    _id,
                     email,
                     password
                 },
                 SECRET_KEY
             );
-
+            await user.save();
             return res.status(200).json({
-                id,
+                _id,
                 email,
                 token
             });
@@ -28,16 +28,17 @@ export class AuthController {
 
     public loginUser = async (req: Request, res: Response) => {
         try {
-            const user: any = await User.findOne({email: req.body.email});
-            const {email, id, password} = user;
+            // @ts-ignore
+            const user: IUser = await User.findOne({email: req.body.email});
+            const {email, _id, password} = user._doc;
             const isMatch = await user.comparePassword(req.body.password);
             if (isMatch) {
                 const token = jwt.sign({
-                    id, email, password
+                    _id, email, password
                 }, SECRET_KEY);
                 return res.status(200).json({
                     email,
-                    id,
+                    _id,
                     token
                 });
             } else {
