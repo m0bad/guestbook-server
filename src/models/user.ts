@@ -2,8 +2,12 @@ import {Document, model, Model, Schema} from "mongoose";
 import bcrypt from 'bcrypt';
 
 export interface IUser extends Document {
-    email: string,
-    password: string
+    _doc: {
+        _id: string,
+        email: string,
+        password: string,
+    };
+    comparePassword(password: string): boolean
 }
 
 export const userSchema: Schema = new Schema({
@@ -19,7 +23,8 @@ export const userSchema: Schema = new Schema({
 });
 
 userSchema.pre<IUser>('save', function save(next) {
-    this.password = bcrypt.hashSync(this.password, 10);
+    this._doc.password = bcrypt.hashSync(this._doc.password, 10);
+    next();
 });
 
 userSchema.methods.comparePassword = function (psw: string): boolean {
