@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 // @ts-ignore
 import {PORT, DB_URL} from "../local";
+import {UserRouter} from "./routes/userRouter";
 
 class Server {
     private app: express.Application;
@@ -9,7 +10,7 @@ class Server {
     constructor() {
         this.app = express();
         this.initializeConfigs();
-        // this.initializeRoutes();
+        this.initializeRoutes();
         this.initializeDB();
     }
 
@@ -18,6 +19,10 @@ class Server {
         this.app.set('port', PORT || 3000);
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: false}));
+    }
+
+    private initializeRoutes(): void{
+        this.app.use('/api/auth', new UserRouter().router);
     }
 
     private initializeDB() {
