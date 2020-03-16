@@ -22,7 +22,7 @@ export class AuthController {
                 token
             });
         } catch (err) {
-            console.log(`ERROR in register controller: ${err}`)
+            return res.status(400).json(`ERROR in register controller: ${err}`);
         }
     };
 
