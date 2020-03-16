@@ -7,7 +7,6 @@ export class UserRouter {
 
     constructor() {
         this.router = Router();
-        console.log('hello');
         this.routes();
     }
 
