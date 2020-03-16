@@ -6,7 +6,7 @@ import {SECRET_KEY} from "../../local";
 export class AuthController {
     public registerUser = async (req: Request, res: Response) => {
         try {
-            const user: any = new User(req.body);
+            const user: IUser = new User(req.body);
             const {email, password, _id} = user._doc;
             const token = jwt.sign({
                     _id,
