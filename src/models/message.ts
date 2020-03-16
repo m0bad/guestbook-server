@@ -25,7 +25,6 @@ export const messageSchema: Schema = new Schema({
     },
     replies: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
     },
     createdAt: {
         type: Date,
