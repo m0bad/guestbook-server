@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 // @ts-ignore
 import {PORT, DB_URL} from "../local";
 import {UserRouter} from "./routes/userRouter";
+import {MessagesRouter} from "./routes/Messagesrouter";
 
 class Server {
     private app: express.Application;
@@ -23,6 +24,7 @@ class Server {
 
     private initializeRoutes(): void{
         this.app.use('/api/auth', new UserRouter().router);
+        this.app.use('/api/messages', new MessagesRouter().router);
     }
 
     private initializeDB() {
