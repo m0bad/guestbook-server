@@ -8,7 +8,7 @@ export interface IMessage extends Document {
         _id: string,
         text: string,
         author: IUser,
-        replies?: IReply[],
+        replies: IReply[],
         createdAt: Date,
         updatedAt: Date,
     };

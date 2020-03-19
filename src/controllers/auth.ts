@@ -30,6 +30,9 @@ export class AuthController {
         try {
             // @ts-ignore
             const user: IUser = await User.findOne({email: req.body.email});
+            if(!user){
+                return res.status(400).json({err: 'User Not Found'});
+            }
             const {email, _id, password} = user._doc;
             const isMatch = await user.comparePassword(req.body.password);
             if (isMatch) {
